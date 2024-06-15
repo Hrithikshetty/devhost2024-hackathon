@@ -24,65 +24,71 @@ const generateAccessAndRefreshToken = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, username, password, nmcUid } = req.body;
 
-  if (!email || !username || !password) {
-    throw new ApiError(400, "Please provide email, username, and password");
+  if (!email || !username || !password || !nmcUid) {
+    throw new ApiError(400, "Please provide email, username, password, and NMC UID");
   }
-  
 
-  const existedUser = await User.findOne({ $or: [{ email }, { username }] });
+  const existedUser = await User.findOne({ $or: [{ email }, { username }, { nmcUid }] });
   if (existedUser) {
-    throw new ApiError(409, "Username or email is already existed");
+    throw new ApiError(409, "Username, email, or NMC UID already exists");
   }
 
   const userData = await User.create({
     email,
     password,
     username: username.toLowerCase(),
+    nmcUid,
   });
 
   const createdUserName = await User.findById(userData._id).select("-password -refreshToken");
 
   if (!createdUserName) {
-    throw new ApiError(500, "something went wrong while registering the user");
+    throw new ApiError(500, "Something went wrong while registering the user");
   }
 
   return res
     .status(201)
-    .json(new ApiResponse(200, createdUserName, "user registered successfully"));
+    .json(new ApiResponse(200, createdUserName, "User registered successfully"));
 });
 
+
 const loginUser = asyncHandler(async (req, res) => {
-    const { email, username, password } = req.body;
-  
-    if (!email && !username) {
-      throw new ApiError(400, "username or email needed");
-    }
-  
-    const user = await User.findOne({ $or: [{ username }, { email }] });
-    if (!user) {
-      throw new ApiError(404, "User does not exist");
-    }
-  
-    const isPasswordValid = await user.isPasswordCorrect(password);
-  
-    if (!isPasswordValid) {
-      throw new ApiError(401, "Password not matching");
-    }
-  
-    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
-  
-    const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
-  
-    const options = { httpOnly: true, secure: true };
-  
-    return res
-      .status(200)
-      .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", refreshToken, options)
-      .json(new ApiResponse(200, { user: loggedInUser, accessToken }, "user logged in successfully"));
-  });
+  const { nmcUid, password } = req.body;
+
+  if (!nmcUid || !password) {
+    throw new ApiError(400, "NMC UID and password are required");
+  }
+
+  const user = await User.findOne({ nmcUid });
+  if (!user) {
+    throw new ApiError(404, "User does not exist");
+  }
+
+  const isPasswordValid = await user.isPasswordCorrect(password);
+
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Password not matching");
+  }
+
+  const accessToken = await user.generateAccessToken();
+  const refreshToken = await user.generateRefreshToken();
+
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+
+  const options = { httpOnly: true, secure: true };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(new ApiResponse(200, { user: loggedInUser, accessToken }, "User logged in successfully"));
+});
+
   
 
 const logoutUser = asyncHandler(async (req, res) => {

@@ -19,6 +19,12 @@ const UserSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    nmcUid: {
+      type: String,
+      required: [true, "NMC uid is required"],
+      unique: true,
+      trim: true,
+    },
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -46,7 +52,7 @@ UserSchema.methods.generateAccessToken = async function () {
       _id: this._id,
       email: this.email,
       username: this.username,
-      fullName: this.fullName,
+      nmcUid: this.nmcUid,
     },
     process.env.JWT_TOKEN_SECRET,
     {
@@ -67,4 +73,4 @@ UserSchema.methods.generateRefreshToken = async function () {
   );
 };
 
-export const  User = mongoose.model("User", UserSchema);
+export const User = mongoose.model("User", UserSchema);

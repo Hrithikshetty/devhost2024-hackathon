@@ -37,7 +37,7 @@ export default function Register() {
           router.push("/Pages/login");
         }, 2000);
       } else {
-        setErrorMessage(data.message || "Sign up failed. Please try again."); // Use error message from backend if available
+        setErrorMessage(data.message || "Sign up failed. Please try again.");
         setTimeout(() => {
           setErrorMessage("");
         }, 2000);
