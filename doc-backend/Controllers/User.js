@@ -53,7 +53,6 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUserName, "User registered successfully"));
 });
 
-
 const loginUser = asyncHandler(async (req, res) => {
   const { nmcUid, password } = req.body;
 

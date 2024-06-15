@@ -8,15 +8,19 @@ import { Label } from "@/components/ui/Label";
 
 export default function Component() {
   const router = useRouter();
-
-  const [email, setEmail] = React.useState("");
+  const [nmcUid, setNmcUid] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
-  const [isLoginedIn, setIsLoginedIn] = React.useState(false); // Track login status
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false); 
 
   const handleLogin = async () => {
+    if (!nmcUid || !password) { 
+      setError("NMC UID and password are required.");
+      return;
+    }
+
     try {
       setIsLoading(true);
       const response = await fetch("http://localhost:8080/api/v1/users/login", {
@@ -24,24 +28,25 @@ export default function Component() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ nmcUid, password }), 
       });
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.accessToken); 
         router.push("/home");
         setMessage("Login successful");
-        setIsLoginedIn(true);
+        setIsLoggedIn(true);
       } else {
-        setError("Login failed. Please check your credentials.");
+        const errorData = await response.json();
+        setError(errorData.message || "Login failed. Please check your credentials.");
       }
     } catch (error) {
       console.error("Login failed:", error);
       setError("An error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
-      setEmail("");
-      setPassword("");
+      setNmcUid(""); 
+      setPassword(""); 
     }
   };
 
@@ -52,7 +57,7 @@ export default function Component() {
           <Link href="#">
             <div className="flex items-center space-x-2 cursor-pointer text-white">
               <MountainIcon className="w-8 h-8" />
-              <span className="text-2xl font-bold text-white">appname</span>
+              <span className="text-2xl font-bold text-white">SecureMed</span>
             </div>
           </Link>
         </div>
@@ -65,14 +70,14 @@ export default function Component() {
             </div>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">NMC uid</Label>
+                <Label htmlFor="nmcUid">NMC UID</Label>
                 <Input
                   className="rounded-white bg-white text-white"
-                  id="uid"
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="uid"
+                  id="nmcUid" 
+                  onChange={(e) => setNmcUid(e.target.value)} 
+                  placeholder="NMC UID"
                   required
-                  type="password"
+                  type="text" 
                 />
               </div>
               <div className="space-y-2 text-white">
@@ -91,7 +96,7 @@ export default function Component() {
                 className="w-full bg-white text-black"
                 disabled={isLoading}
               >
-                {isLoading ? "Signing Up..." : "Sign Up"}
+                {isLoading ? "Signing In..." : "Sign In"}
               </Button>
               
               <div className="w-full flex items-center justify-center">
