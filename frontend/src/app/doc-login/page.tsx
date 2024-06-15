@@ -65,14 +65,14 @@ export default function Component() {
             </div>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">NMC uid</Label>
                 <Input
                   className="rounded-white bg-white text-white"
-                  id="email"
+                  id="uid"
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="uid"
                   required
-                  type="email"
+                  type="password"
                 />
               </div>
               <div className="space-y-2 text-white">
