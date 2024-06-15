@@ -33,11 +33,8 @@ export default function Component() {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-          // localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
-          // localStorage.setItem("username", JSON.stringify(data.user.username)); 
-          // localStorage.setItem("email",JSON.stringify(data.user.email)); 
-          // localStorage.setItem("nmcUid", JSON.stringify(data.user.nmcUid));
-          router.push("/home");
+          localStorage.setItem("accessToken", data.accessToken);
+          // router.push("/doc-home");
           setMessage("Login successful");
           setIsLoggedIn(true);
         
@@ -76,7 +73,7 @@ export default function Component() {
               <div className="space-y-2">
                 <Label htmlFor="nmcUid">NMC UID</Label>
                 <Input
-                  className="rounded-white bg-white text-black"
+                  className="rounded-white bg-white text-white"
                   id="nmcUid" 
                   onChange={(e) => setNmcUid(e.target.value)} 
                   placeholder="NMC UID"
@@ -88,7 +85,7 @@ export default function Component() {
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
-                  className="bg-white text-black"
+                  className="bg-white text-white"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
