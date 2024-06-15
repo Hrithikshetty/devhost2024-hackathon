@@ -1,13 +1,12 @@
-"use client"
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/Label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-export default function Component() {
+export function Component() {
   return (
-    <div className="bg-gradient-to-br bg-black min-h-screen flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    <div className="bg-gradient-to-br from-[#6366F1] to-[#9333EA] min-h-screen flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="max-w-2xl w-full space-y-8">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="bg-[#6366F1] p-6 flex items-center justify-between">
@@ -22,19 +21,19 @@ export default function Component() {
             </Avatar>
           </div>
         </div>
-        <Card className="bg-white shadow-lg text-black">
+        <Card className="bg-white shadow-lg">
           <CardHeader>
-            <CardTitle className="text-black">Check Patient Profile</CardTitle>
-            <CardDescription>Enter the unique code provided to Patient to access Patient profile.</CardDescription>
+            <CardTitle>Check Your Profile</CardTitle>
+            <CardDescription>Enter the unique code provided to you to access your profile.</CardDescription>
           </CardHeader>
           <CardContent>
             <form>
-              <div className="space-y-4 text-black">
+              <div className="space-y-4">
                 <div>
                   <Label htmlFor="code">Unique Code</Label>
-                  <Input className="mt-1 text-white" id="code" placeholder="Enter your code" type="text" />
+                  <Input className="mt-1" id="code" placeholder="Enter your code" type="text" />
                 </div>
-                <Button className="w-full bg-black text-white" type="submit">
+                <Button className="w-full" type="submit">
                   Check Profile
                 </Button>
               </div>

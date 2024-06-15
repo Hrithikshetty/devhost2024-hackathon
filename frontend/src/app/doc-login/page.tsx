@@ -54,8 +54,6 @@ export default function Component() {
       setPassword(""); 
     }
   };
-  
-
   return (
     <>
       <header className="py-10.5 h-5 lg:py-14.5 bg-black py-4">
