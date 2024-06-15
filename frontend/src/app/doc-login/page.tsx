@@ -8,15 +8,19 @@ import { Label } from "@/components/ui/Label";
 
 export default function Component() {
   const router = useRouter();
-
-  const [email, setEmail] = React.useState("");
+  const [nmcUid, setNmcUid] = React.useState(""); // Changed to nmcUid
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
-  const [isLoginedIn, setIsLoginedIn] = React.useState(false); // Track login status
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false); // Track login status
 
   const handleLogin = async () => {
+    if (!nmcUid || !password) { // Check if nmcUid and password are provided
+      setError("NMC UID and password are required.");
+      return;
+    }
+
     try {
       setIsLoading(true);
       const response = await fetch("http://localhost:8080/api/v1/users/login", {
@@ -24,24 +28,25 @@ export default function Component() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ nmcUid, password }), // Changed to nmcUid
       });
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.accessToken); // Store access token
         router.push("/home");
         setMessage("Login successful");
-        setIsLoginedIn(true);
+        setIsLoggedIn(true);
       } else {
-        setError("Login failed. Please check your credentials.");
+        const errorData = await response.json();
+        setError(errorData.message || "Login failed. Please check your credentials.");
       }
     } catch (error) {
       console.error("Login failed:", error);
       setError("An error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
-      setEmail("");
-      setPassword("");
+      setNmcUid(""); // Clear nmcUid
+      setPassword(""); // Clear password
     }
   };
 
@@ -65,14 +70,14 @@ export default function Component() {
             </div>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">NMC uid</Label>
+                <Label htmlFor="nmcUid">NMC UID</Label>
                 <Input
                   className="rounded-white bg-white text-white"
-                  id="uid"
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="uid"
+                  id="nmcUid" // Changed to nmcUid
+                  onChange={(e) => setNmcUid(e.target.value)} // Changed to setNmcUid
+                  placeholder="NMC UID"
                   required
-                  type="email"
+                  type="text" // Changed type to text
                 />
               </div>
               <div className="space-y-2 text-white">
@@ -91,7 +96,7 @@ export default function Component() {
                 className="w-full bg-white text-black"
                 disabled={isLoading}
               >
-                {isLoading ? "Signing Up..." : "Sign Up"}
+                {isLoading ? "Signing In..." : "Sign In"}
               </Button>
               
               <div className="w-full flex items-center justify-center">
