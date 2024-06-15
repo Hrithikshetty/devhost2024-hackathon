@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import * as React from "react";
-import { useRouter } from "next/navigation"; // Import useRouter from next/router
-import { Label } from "@/components/ui/Label";
+import { useRouter } from "next/navigation"; 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/Label";
 
 export default function Component() {
   const router = useRouter();
