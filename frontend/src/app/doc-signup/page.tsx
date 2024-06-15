@@ -4,15 +4,15 @@ import * as React from "react";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // Correct import
 import { useState } from "react";
-import "../app.css";
 
 export default function Register() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nmcUid, setNmcUid] = useState(""); 
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -25,8 +25,10 @@ export default function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, nmcUid }), 
       });
+
+      const data = await response.json();
 
       if (response.ok) {
         setSuccessMessage("Sign up successful. Redirecting to login page...");
@@ -35,7 +37,7 @@ export default function Register() {
           router.push("/Pages/login");
         }, 2000);
       } else {
-        setErrorMessage("Sign up failed. Please try again.");
+        setErrorMessage(data.message || "Sign up failed. Please try again."); // Use error message from backend if available
         setTimeout(() => {
           setErrorMessage("");
         }, 2000);
@@ -51,6 +53,7 @@ export default function Register() {
       setUsername("");
       setEmail("");
       setPassword("");
+      setNmcUid("");
     }
   };
 
@@ -61,7 +64,7 @@ export default function Register() {
           <Link href="#">
             <div className="flex items-center space-x-2 cursor-pointer text-white">
               <MountainIcon className="w-8 h-8" />
-              <span className="text-2xl font-bold text-white">Auto-Fis</span>
+              <span className="text-2xl font-bold text-white">App name</span>
             </div>
           </Link>
         </div>
@@ -78,7 +81,7 @@ export default function Register() {
               <div className="space-y-2 text-white">
                 <Label htmlFor="username">Username</Label>
                 <Input
-                  className="bg-white text-white"
+                  className="bg-white text-black"
                   id="username"
                   placeholder="Enter your username"
                   required
@@ -89,7 +92,7 @@ export default function Register() {
               <div className="space-y-2 text-white">
                 <Label htmlFor="email">Email</Label>
                 <Input
-                  className="bg-white text-white"
+                  className="bg-white text-black"
                   id="email"
                   placeholder="Email"
                   required
@@ -98,10 +101,21 @@ export default function Register() {
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="uid">NMC uid</Label>
+                <Input
+                  placeholder="NMC uid"
+                  className="bg-white text-black"
+                  id="uid"
+                  required
+                  value={nmcUid}
+                  onChange={(e) => setNmcUid(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   placeholder="Password"
-                  className="bg-white text-white"
+                  className="bg-white text-black"
                   id="password"
                   required
                   type="password"
@@ -119,7 +133,7 @@ export default function Register() {
               <div className="w-full flex items-center justify-center">
                 <p className="text-gray-500 dark:text-gray-400">
                   Already have an account?
-                  <Link className="underline" href="/Pages/login">
+                  <Link className="underline" href="/doc-login">
                     Sign in
                   </Link>
                 </p>
@@ -129,14 +143,14 @@ export default function Register() {
         </div>
       </div>
       {successMessage && (
-        <div className="fixed inset-0 ">
+        <div className="fixed inset-0 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p className="text-green-500">{successMessage}</p>
           </div>
         </div>
       )}
       {errorMessage && (
-        <div className="fixed inset-0 ">
+        <div className="fixed inset-0 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p className="text-red-500">{errorMessage}</p>
           </div>
