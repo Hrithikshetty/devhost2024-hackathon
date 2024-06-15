@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button"
 
 export default function Component() {
   return (
-    <div className="bg-gradient-to-br bg-black min-h-screen flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    <div className="bg-gradient-to-br bg-white min-h-screen flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="max-w-2xl w-full space-y-8">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-          <div className="bg-[#6366F1] p-6 flex items-center justify-between">
+          <div className="bg-black p-6 flex items-center justify-between">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-white">Dr. Jane Doe</h2>
               <p className="text-gray-200">NMCUID: 12345678</p>
@@ -22,7 +22,7 @@ export default function Component() {
             </Avatar>
           </div>
         </div>
-        <Card className="bg-white shadow-lg text-black">
+        <Card className="bg-gray-100 shadow-lg text-black">
           <CardHeader>
             <CardTitle className="text-black">Check Patient Profile</CardTitle>
             <CardDescription>Enter the unique code provided to Patient to access Patient profile.</CardDescription>
