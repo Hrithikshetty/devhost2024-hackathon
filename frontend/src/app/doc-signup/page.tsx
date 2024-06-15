@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import "../app.css";
+// import "../app.css";
 
 export default function Register() {
   const router = useRouter();
@@ -61,7 +61,7 @@ export default function Register() {
           <Link href="#">
             <div className="flex items-center space-x-2 cursor-pointer text-white">
               <MountainIcon className="w-8 h-8" />
-              <span className="text-2xl font-bold text-white">Auto-Fis</span>
+              <span className="text-2xl font-bold text-white">App name</span>
             </div>
           </Link>
         </div>
@@ -98,6 +98,18 @@ export default function Register() {
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="password">NMC uid</Label>
+                <Input
+                  placeholder="Uid"
+                  className="bg-white text-white"
+                  id="password"
+                  required
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   placeholder="Password"
@@ -119,7 +131,7 @@ export default function Register() {
               <div className="w-full flex items-center justify-center">
                 <p className="text-gray-500 dark:text-gray-400">
                   Already have an account?
-                  <Link className="underline" href="/Pages/login">
+                  <Link className="underline" href="/doc-login">
                     Sign in
                   </Link>
                 </p>
