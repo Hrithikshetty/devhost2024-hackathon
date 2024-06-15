@@ -1,10 +1,10 @@
-import express from 'express';
-import Web3 from 'web3';
-import bodyParser from 'body-parser';
-import multer from 'multer';
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
+const express = require('express'); // Import express using CommonJS syntax
+const Web3 = require('web3'); // Import web3 using CommonJS syntax
+const bodyParser = require('body-parser'); // Import body-parser using CommonJS syntax
+const multer = require('multer'); // Import multer using CommonJS syntax
+const dotenv = require('dotenv'); // Import dotenv using CommonJS syntax
+const jwt = require('jsonwebtoken'); // Import jwt using CommonJS syntax
+const crypto = require('crypto'); // Import crypto using CommonJS syntax
 
 dotenv.config();
 
@@ -14,12 +14,267 @@ app.use(bodyParser.json());
 const upload = multer({ dest: 'uploads/' });
 
 // Web3 setup to connect to Ganache
-const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
+const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
 
 // Contract setup (replace with your contract's ABI and address from Ganache deployment)
-const contractAddress = 'YOUR_CONTRACT_ADDRESS';  // Update with deployed contract address
+const contractAddress = '0xef6A4C7BCf33424A96180Baa78E946bb420F1693';  // Update with deployed contract address
 const abi = [
-    // Your contract ABI here
+    [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "uint256",
+                    "name": "patientId",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "uint256",
+                    "name": "doctorId",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "expiryTimestamp",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "bytes32",
+                    "name": "encryptedToken",
+                    "type": "bytes32"
+                }
+            ],
+            "name": "AccessGranted",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "uint256",
+                    "name": "patientId",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "age",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "sex",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "patientAddress",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "phoneNo",
+                    "type": "string"
+                }
+            ],
+            "name": "PatientDataAppended",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "patientId",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "age",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "string",
+                    "name": "sex",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "patientAddress",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "phoneNo",
+                    "type": "string"
+                }
+            ],
+            "name": "createPatient",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "doctorId",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "expiryTimestamp",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "bytes32",
+                    "name": "encryptedToken",
+                    "type": "bytes32"
+                }
+            ],
+            "name": "grantAccess",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "accessTokens",
+            "outputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "",
+                    "type": "bytes32"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "patientId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getPatient",
+            "outputs": [
+                {
+                    "components": [
+                        {
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "name",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "age",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "sex",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "patientAddress",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "phoneNo",
+                            "type": "string"
+                        }
+                    ],
+                    "internalType": "struct HealthRecords.Patient",
+                    "name": "",
+                    "type": "tuple"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "patients",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "id",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "age",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "string",
+                    "name": "sex",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "patientAddress",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "phoneNo",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ]
 ];
 const contract = new web3.eth.Contract(abi, contractAddress);
 
