@@ -34,7 +34,7 @@ export default function Register() {
         setSuccessMessage("Sign up successful. Redirecting to login page...");
         setTimeout(() => {
           setSuccessMessage("");
-          router.push("/Pages/login");
+          router.push("/doc-login");
         }, 2000);
       } else {
         setErrorMessage(data.message || "Sign up failed. Please try again.");
@@ -64,7 +64,7 @@ export default function Register() {
           <Link href="#">
             <div className="flex items-center space-x-2 cursor-pointer text-white">
               <MountainIcon className="w-8 h-8" />
-              <span className="text-2xl font-bold text-white">App name</span>
+              <span className="text-2xl font-bold text-white">SecureMed</span>
             </div>
           </Link>
         </div>
@@ -81,7 +81,7 @@ export default function Register() {
               <div className="space-y-2 text-white">
                 <Label htmlFor="username">Username</Label>
                 <Input
-                  className="bg-white text-black"
+                  className="bg-white text-white"
                   id="username"
                   placeholder="Enter your username"
                   required
@@ -92,7 +92,7 @@ export default function Register() {
               <div className="space-y-2 text-white">
                 <Label htmlFor="email">Email</Label>
                 <Input
-                  className="bg-white text-black"
+                  className="bg-white text-white"
                   id="email"
                   placeholder="Email"
                   required
@@ -104,7 +104,7 @@ export default function Register() {
                 <Label htmlFor="uid">NMC uid</Label>
                 <Input
                   placeholder="NMC uid"
-                  className="bg-white text-black"
+                  className="bg-white text-white"
                   id="uid"
                   required
                   value={nmcUid}
@@ -115,7 +115,7 @@ export default function Register() {
                 <Label htmlFor="password">Password</Label>
                 <Input
                   placeholder="Password"
-                  className="bg-white text-black"
+                  className="bg-white text-white"
                   id="password"
                   required
                   type="password"

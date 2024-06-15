@@ -52,7 +52,7 @@ export default function Component() {
           <Link href="#">
             <div className="flex items-center space-x-2 cursor-pointer text-white">
               <MountainIcon className="w-8 h-8" />
-              <span className="text-2xl font-bold text-white">appname</span>
+              <span className="text-2xl font-bold text-white">SecureMed</span>
             </div>
           </Link>
         </div>
@@ -72,7 +72,7 @@ export default function Component() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="uid"
                   required
-                  type="password"
+                  type="email"
                 />
               </div>
               <div className="space-y-2 text-white">
