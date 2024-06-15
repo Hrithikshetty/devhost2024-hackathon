@@ -8,15 +8,15 @@ import { Label } from "@/components/ui/Label";
 
 export default function Component() {
   const router = useRouter();
-  const [nmcUid, setNmcUid] = React.useState(""); // Changed to nmcUid
+  const [nmcUid, setNmcUid] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false); // Track login status
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false); 
 
   const handleLogin = async () => {
-    if (!nmcUid || !password) { // Check if nmcUid and password are provided
+    if (!nmcUid || !password) { 
       setError("NMC UID and password are required.");
       return;
     }
@@ -28,11 +28,11 @@ export default function Component() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nmcUid, password }), // Changed to nmcUid
+        body: JSON.stringify({ nmcUid, password }), 
       });
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.accessToken); // Store access token
+        localStorage.setItem("token", data.accessToken); 
         router.push("/home");
         setMessage("Login successful");
         setIsLoggedIn(true);
@@ -45,8 +45,8 @@ export default function Component() {
       setError("An error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
-      setNmcUid(""); // Clear nmcUid
-      setPassword(""); // Clear password
+      setNmcUid(""); 
+      setPassword(""); 
     }
   };
 
@@ -73,11 +73,11 @@ export default function Component() {
                 <Label htmlFor="nmcUid">NMC UID</Label>
                 <Input
                   className="rounded-white bg-white text-white"
-                  id="nmcUid" // Changed to nmcUid
-                  onChange={(e) => setNmcUid(e.target.value)} // Changed to setNmcUid
+                  id="nmcUid" 
+                  onChange={(e) => setNmcUid(e.target.value)} 
                   placeholder="NMC UID"
                   required
-                  type="text" // Changed type to text
+                  type="text" 
                 />
               </div>
               <div className="space-y-2 text-white">
