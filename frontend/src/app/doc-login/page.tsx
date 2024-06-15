@@ -20,7 +20,7 @@ export default function Component() {
       setError("NMC UID and password are required.");
       return;
     }
-
+  
     try {
       setIsLoading(true);
       const response = await fetch("http://localhost:8080/api/v1/users/login", {
@@ -32,10 +32,15 @@ export default function Component() {
       });
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.accessToken); 
-        router.push("/home");
-        setMessage("Login successful");
-        setIsLoggedIn(true);
+        console.log(data);
+          // localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
+          // localStorage.setItem("username", JSON.stringify(data.user.username)); 
+          // localStorage.setItem("email",JSON.stringify(data.user.email)); 
+          // localStorage.setItem("nmcUid", JSON.stringify(data.user.nmcUid));
+          router.push("/home");
+          setMessage("Login successful");
+          setIsLoggedIn(true);
+        
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Login failed. Please check your credentials.");
@@ -49,6 +54,7 @@ export default function Component() {
       setPassword(""); 
     }
   };
+  
 
   return (
     <>
@@ -72,7 +78,7 @@ export default function Component() {
               <div className="space-y-2">
                 <Label htmlFor="nmcUid">NMC UID</Label>
                 <Input
-                  className="rounded-white bg-white text-white"
+                  className="rounded-white bg-white text-black"
                   id="nmcUid" 
                   onChange={(e) => setNmcUid(e.target.value)} 
                   placeholder="NMC UID"
@@ -84,7 +90,7 @@ export default function Component() {
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
-                  className="bg-white text-white "
+                  className="bg-white text-black"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
