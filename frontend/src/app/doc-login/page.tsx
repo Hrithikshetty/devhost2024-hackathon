@@ -34,7 +34,8 @@ export default function Component() {
         const data = await response.json();
         console.log(data);
           localStorage.setItem("accessToken", data.accessToken);
-          // router.push("/doc-home");
+          localStorage.setItem("nmcUid",nmcUid );
+          router.push("/doc-home");
           setMessage("Login successful");
           setIsLoggedIn(true);
         
