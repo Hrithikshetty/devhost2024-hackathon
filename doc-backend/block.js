@@ -17,7 +17,7 @@ const upload = multer({ dest: 'uploads/' });
 const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
 
 // Contract setup (replace with your contract's ABI and address from Ganache deployment)
-const contractAddress = '0xef6A4C7BCf33424A96180Baa78E946bb420F1693';  // Update with deployed contract address
+const contractAddress = '0x63CBa626Eb71D8f40078C35F6083944Cb63D01D9';  // Update with deployed contract address
 const abi = [
     [
         {
@@ -49,49 +49,6 @@ const abi = [
                 }
             ],
             "name": "AccessGranted",
-            "type": "event"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "internalType": "uint256",
-                    "name": "patientId",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "age",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "sex",
-                    "type": "string"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "patientAddress",
-                    "type": "string"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "phoneNo",
-                    "type": "string"
-                }
-            ],
-            "name": "PatientDataAppended",
             "type": "event"
         },
         {
@@ -154,6 +111,49 @@ const abi = [
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "uint256",
+                    "name": "patientId",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "age",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "sex",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "patientAddress",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "phoneNo",
+                    "type": "string"
+                }
+            ],
+            "name": "PatientDataAppended",
+            "type": "event"
         },
         {
             "inputs": [
