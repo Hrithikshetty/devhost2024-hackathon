@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "nodemon -r dotenv/config --experimental-json-modules index.js"
   },
@@ -34,6 +34,6 @@
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.0",
     "parser": "^0.1.4",
-    "web3": "^4.9.0"
+    "web3": "^1.7.3"
   }
 }

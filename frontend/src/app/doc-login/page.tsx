@@ -20,7 +20,7 @@ export default function Component() {
       setError("NMC UID and password are required.");
       return;
     }
-
+  
     try {
       setIsLoading(true);
       const response = await fetch("http://localhost:8080/api/v1/users/login", {
@@ -32,10 +32,13 @@ export default function Component() {
       });
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.accessToken); 
-        router.push("/home");
-        setMessage("Login successful");
-        setIsLoggedIn(true);
+        console.log(data);
+          localStorage.setItem("accessToken", data.accessToken);
+          localStorage.setItem("nmcUid",nmcUid );
+          router.push("/doc-home");
+          setMessage("Login successful");
+          setIsLoggedIn(true);
+        
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Login failed. Please check your credentials.");
@@ -49,7 +52,6 @@ export default function Component() {
       setPassword(""); 
     }
   };
-
   return (
     <>
       <header className="py-10.5 h-5 lg:py-14.5 bg-black py-4">
@@ -84,7 +86,7 @@ export default function Component() {
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
-                  className="bg-white text-white "
+                  className="bg-white text-white"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required

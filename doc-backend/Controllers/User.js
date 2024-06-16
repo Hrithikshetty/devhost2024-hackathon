@@ -102,6 +102,32 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged out"));
 });
 
+// const getCurrentUser = asyncHandler(async (req, res) => {
+//   // Get accessToken from localStorage or request headers
+//   const accessToken = req.headers.authorization.split(' ')[1];
+
+//   if (!accessToken) {
+//     throw new ApiError(401, "Access Token not found");
+//   }
+
+//   try {
+//     // Verify the accessToken
+//     const decodedToken = jwt.verify(accessToken, process.env.JWT_TOKEN_SECRET);
+    
+//     // Find user by decoded user ID
+//     const user = await User.findById(decodedToken._id).select("-password -refreshToken");
+
+//     if (!user) {
+//       throw new ApiError(404, "User not found");
+//     }
+
+//     // Return user data
+//     return res.status(200).json(new ApiResponse(200, user, "Current user fetched successfully"));
+//   } catch (error) {
+//     throw new ApiError(401, error.message || "Invalid Access Token");
+//   }
+// });
+
 const refreshAccessToken = asyncHandler(async (req, res) => {
   try {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
@@ -109,7 +135,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     if (!incomingRefreshToken) {
       throw new ApiError(401, "Unauthorized request");
     }
-
     const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
 
     const user = await User.findById(decodedToken?._id);
@@ -119,10 +144,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     if (incomingRefreshToken !== user?.refreshToken) {
       throw new ApiError(401, "Refresh token expired or used");
     }
-
     const options = { httpOnly: true, secure: true };
     const { accessToken, refreshToken: newRefreshToken } = await generateAccessAndRefreshToken(user._id);
-
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
@@ -133,11 +156,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, error?.message || "Invalid refresh token");
   }
 });
-
+ 
 const getCurrentUser = asyncHandler(async (req, res) => {
+  const users = await User.find();
   return res
     .status(200)
-    .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
+    .json(new ApiResponse(200, users, "Current user fetched successfully"));
 });
 
 export { registerUser, loginUser, logoutUser, refreshAccessToken, getCurrentUser };
