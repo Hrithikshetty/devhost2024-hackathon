@@ -1,0 +1,7 @@
+.card-container{
+    /* background-color: black; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}

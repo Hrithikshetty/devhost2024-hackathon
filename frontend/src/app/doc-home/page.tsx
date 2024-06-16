@@ -17,6 +17,7 @@ interface UserData {
 
 export default function DocHome() {
   const router = useRouter();
+  const [inputValue, setInputValue] = useState('');
   const [userData, setUserData] = useState<UserData | null>(null); 
   const [loading, setLoading] = useState<boolean>(true); 
   const [error, setError] = useState<string | null>(null);
@@ -55,7 +56,16 @@ export default function DocHome() {
 
     fetchCurrentUser(); 
   }, []);
-
+  const goLogin =() =>{
+    window.location.href = 'http://localhost:3002/'
+  }
+  const GotoPlace = () => {
+    localStorage.setItem("lala",inputValue)
+    window.open(`http://localhost:3000/${inputValue}`)
+  }
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
@@ -75,7 +85,7 @@ export default function DocHome() {
               <p className="text-gray-200">{userData?.email}</p>
             </div>
             <Avatar className="border-4 border-white">
-              <AvatarImage alt={userData?.username} src="/placeholder-user.jpg" />
+              <AvatarImage alt={userData?.username} src="/placeholder-user.jpg" onClick={goLogin}/>
               <AvatarFallback>{userData?.username ? userData.username.charAt(0) : 'U'}</AvatarFallback>
             </Avatar>
           </div>
@@ -91,13 +101,15 @@ export default function DocHome() {
                 <div>
                   <h3 className="font-semibold">Unique Code</h3>
                   <Input
-                    className="mt-1 text-white"
-                    id="code"
-                    placeholder="Enter your code"
-                    type="text"
-                  />
+                  className="mt-1 text-white"
+                  id="code"
+                  placeholder="Enter your code"
+                  type="text"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                />
                 </div>
-                <Button className="w-full bg-black text-white" type="submit">
+                <Button className="w-full bg-black text-white" type="submit" onClick={GotoPlace}>
                   Check Profile
                 </Button>
               </div>
